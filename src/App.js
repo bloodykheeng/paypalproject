@@ -1,24 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
-
+import logo from "./logo.svg";
+import { useState } from "react";
+import PaypalCheckoutButton from "./components/PaypalCheckoutButton";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 function App() {
+  const [show, setShow] = useState(false);
+
+  // useEffect(() => {
+  //   window.paypal
+  //     .Buttons({
+  //       createOrder: (data, actions, err) => {
+  //         return actions.order.create({
+  //           intent: "CAPTURE",
+  //           purchase_units: [
+  //             {
+  //               description: "cool looking table",
+  //               amount: { currency_code: "USD", value: 100.0 },
+  //             },
+  //           ],
+  //         });
+  //       },
+  //       onApprove: async (data, actions) => {
+  //         const order = await actions.capture();
+  //         console.log("succesfull order : " + order);
+  //       },
+  //       onError: (err) => {
+  //         console.log(err);
+  //       },
+  //     })
+  //     .render(mypaypal.current);
+  // }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <PayPalScriptProvider
+      options={{ "client-id": process.env.REACT_APP_PAYPAL_CLIENT_ID }}
+    >
+      <div className="App">
+        <h1>BLoody Kheengs paypal account</h1>
+        <button onClick={() => setShow(true)}>Click me to pay</button>
+        {show && <PaypalCheckoutButton />}
+      </div>
+    </PayPalScriptProvider>
   );
 }
 
